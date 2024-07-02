@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+export NODE_PATH='/Users/ohsuhan/fastapi/learn_fastapi/lib/node_modules'
+export NPM_CONFIG_PREFIX='/Users/ohsuhan/fastapi/learn_fastapi'
+export npm_config_prefix='/Users/ohsuhan/fastapi/learn_fastapi'
+exec '/Users/ohsuhan/fastapi/learn_fastapi/bin/node' "$@"
