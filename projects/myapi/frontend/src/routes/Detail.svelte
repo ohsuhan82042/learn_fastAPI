@@ -32,7 +32,7 @@
     })
   }
 </script>
-<h1>{question.subject}</h1>
+<!-- <h1>{question.subject}</h1>
 <div>
   {question.content}
 </div>
@@ -43,9 +43,9 @@
 </ul>
 <Error error={error}/>
 <form method="post">
-  <textarea rows="15" bind:value={content}></textarea>
+  <textarea rows="3" bind:value={content}></textarea>
   <input type="submit" value="answer upload" on:click="{post_answer}">
-</form>
+</form> -->
 <div class="container my-3">
   <!-- 질 문 -->
   <h2 class="border-bottom py-2">{question.subject}</h2>

@@ -2,12 +2,22 @@
   import fastapi from "../lib/api"
   import {link} from 'svelte-spa-router'
   let question_list = []
-  function get_question_list() {
-fastapi('get', '/api/question/list', {}, (json) => {
-question_list = json
+  let size= 10
+  let page = 0
+  let total = 0
+  $: total_page = Math.ceil(total/size)
+  function get_question_list(_page) {
+    let params = {
+      page: _page,
+      size: size,
+    }
+fastapi('get', '/api/question/list', params, (json) => {
+question_list = json.question_list
+page = _page
+total = json.total
 })
 }
-  get_question_list()
+  get_question_list(0)
   </script>
 <div class="container my-3">
   <table class="table">
@@ -30,4 +40,35 @@ question_list = json
       {/each}
     </tbody>
   </table>
+  <!-- 페이지 처리 시작 -->
+  <ul class="pagination justify-content-center">
+    <!-- 처음 -->
+    <li class="page-item">
+      <button class="page-link" on:click="{() => get_question_list(0)}">처음</button>
+    </li>
+    <!-- 이전페이지 -->
+    <li class="page-item {page <= 0 && 'disabled'}">
+      <button class="page-link" on:click="{() => get_question_list(page-1)}">이 전</button>
+    </li>
+    <!-- 페이지번호 -->
+    {#each Array(total_page) as _,loop_page}
+    {#if loop_page >= page-2 && loop_page <= page+2}
+    <li class="page-item {loop_page === page && 'active'}">
+      <button on:click="{() => get_question_list(loop_page)}" class="page-link">{loop_page+1}</button>
+    </li>
+    {/if}
+    {/each}
+    <!-- 다음 페이지 -->
+    <li class="page-item {page >= total_page-1 && 'disabled'}">
+      <button class="page-link" on:click="{() => get_question_list(page+1)}">다 음</button>
+    </li>
+        <!-- 마지막 -->
+        <li class="page-item">
+          <button class="page-link" on:click="{() => get_question_list(total_page-1)}">마지막</button>
+        </li>
+
+  </ul>
+  
+  <!-- 페이징처리 끝 -->
+  <a use:link href="/question-create" class ='btn btn-primary'>질문 등록하기 </a>
 </div>
