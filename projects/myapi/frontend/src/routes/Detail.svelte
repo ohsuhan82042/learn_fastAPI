@@ -1,6 +1,9 @@
 <script>
   import fastapi from "../lib/api"
   import Error from "../components/Error.svelte"
+  import {push} from 'svelte-spa-router'
+  import moment from 'moment/min/moment-with-locales'
+  moment.locale('ko')
   export let params = {}
   let question_id = params.question_id
   let question ={answers:[]}
@@ -55,11 +58,13 @@
   content}</div>
     <div class="d-flex justify-content-end">
       <div class="badge bg-light text-dark p-2">
-        {question.create_date}
+        {moment(question.create_date).format("YYYY년 MM월 DD일 hh:mm a")}
       </div>
     </div>
     </div>
   </div>
+  <button class = 'btn btn-secondary' on:click="{() => {push('/')
+  }}">목록</button>
 <!--답변 목록-->
   <h5 class="border-bottom my-3 py-2">{question.answers.length}개 의 답 변 이 있 습
   니 다.</h5>
@@ -70,7 +75,8 @@
   </div>
       <div class="d-flex justify-content-end">
         <div class="badge bg-light text-dark p-2">
-          {answer.create_date}
+          {moment(answer.create_date).format("YYYY년 MM월 DD일 hh:mm a")}
+
         </div>
       </div>
     </div>
