@@ -30,11 +30,13 @@
   <h5 class="my-3 border-bottom pb-2">회원 가입</h5> 
   <Error error={error} />
   <form method="post">
-    <div class="mb-3">
-      <label for="username">사용자 이름</label>
+
+  <div class="mb-3">
+      <label for="username">ID</label>
       <input type="text" class="form-control" id="username" bind:value="{
         username}"> 
   </div>
+
   <div class="mb-3">
     <label for="password1">비밀번호</label>
     <input type="password" class="form-control" id="password1" bind:value=

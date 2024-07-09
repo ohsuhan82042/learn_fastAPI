@@ -1,3 +1,4 @@
+import qs from 'qs';
 const fastapi = (
   operation,
   url,
@@ -8,6 +9,13 @@ const fastapi = (
   let method = operation;
   let content_type = 'application/json';
   let body = JSON.stringify(params);
+
+  if (operation === 'login') {
+    method = 'post';
+    content_type = 'application/x-www-form-urlencoded';
+    body = qs.stringify(params);
+  }
+
   let _url = import.meta.env.VITE_SERVER_URL + url;
   if (method === 'get') {
     _url += '?' + new URLSearchParams(params);
@@ -22,12 +30,12 @@ const fastapi = (
     option['body'] = body;
   }
   fetch(_url, option).then((response) => {
-    if (response.status==204) {
+    if (response.status == 204) {
       //if no content
-      if(success_callback){
-        success_callback()
+      if (success_callback) {
+        success_callback();
       }
-      return
+      return;
     }
     response
       .json()
