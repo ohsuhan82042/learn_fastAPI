@@ -1,7 +1,7 @@
 <script>
   import fastapi from "../lib/api"
   import {link} from 'svelte-spa-router'
-  import {page} from "../lib/store"
+  import {page, is_login, username} from "../lib/store"
   import moment from 'moment/min/moment-with-locales'
   moment.locale('ko')
   let question_list = []
@@ -24,22 +24,24 @@ total = json.total
 <div class="container my-3">
   <table class="table">
     <thead>
-      <tr class="table-dark">
+      <tr class="text-center table-dark">
         <th>번호</th>
-        <th>제목</th>
+        <th style="width:50%">제목</th>
+        <th>글쓴이</th>
         <th>작성일시</th>
       </tr>
     </thead>
     <tbody>
       {#each question_list as question, i}
-      <tr>
+      <tr class="text-center">
         <td>{($page*size)+i+1}</td>
-        <td>
+        <td class='text-start'>
           <a use:link href="/detail/{question.id}">{question.subject}</a>
           {#if question.answers.length>0}
             <span class='text-danger small mx-2'>{question.answers.length}</span>
           {/if}
         </td>
+        <td>{question.user ? question.user.username:""}</td>
         <td>{moment(question.create_date).format("YYYY년 MM년 DD일 hh:mm a")}</td>
       </tr>
       {/each}
@@ -75,5 +77,5 @@ total = json.total
   </ul>
   
   <!-- 페이징처리 끝 -->
-  <a use:link href="/question-create" class ='btn btn-primary'>질문 등록하기 </a>
+  <a use:link href="/question-create" class ='btn btn-primary {$is_login? '':'disabled'}'>{#if $is_login}질문 등록하기 {:else}로그인이 필요합니다 {/if} </a>
 </div>

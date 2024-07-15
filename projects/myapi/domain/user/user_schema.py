@@ -11,6 +11,12 @@ class Token(BaseModel):
   token_type: str
   username: str
 
+class User(BaseModel):
+  id: int
+  username: str
+  email: str
+
+
 @field_validator('username','password1','password2',"email")
 def not_empty(cls, v):
   if not v or not v.strip():
