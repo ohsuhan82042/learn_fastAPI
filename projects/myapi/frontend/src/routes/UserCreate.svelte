@@ -7,6 +7,7 @@
   let password1 = ''
   let password2 = ''
   let email = ''
+  let real_username=''
   function post_user(event) {
     event.preventDefault()
     let url = "/api/user/create"
@@ -14,7 +15,8 @@
         username: username,
         password1: password1,
         password2: password2,
-        email: email
+        email: email,
+        real_username: real_username
     }
     fastapi('post', url, params,
       (json) => {
@@ -50,6 +52,10 @@
   <div class="mb-3">
     <label for="email">이메일</label>
     <input type="text" class="form-control" id="email" bind:value="{email}"> 
+  </div>
+  <div class="mb-3">
+    <label for="email">이름</label>
+    <input type="text" class="form-control" id="email" bind:value="{real_username}"> 
   </div>
     <button type="submit" class="btn btn-primary" on:click="{post_user}">생 성 하 기</button>
   </form> 

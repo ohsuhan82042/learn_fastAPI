@@ -36,6 +36,41 @@
       error = err_json
     })
   }
+
+  function delete_question(_question_id) {
+    if(window.confirm('정말로 삭제 하시겠습니까?')) {
+      let url = "/api/question/delete"
+      let params = {
+      question_id: _question_id
+      }
+      fastapi('delete', url, params,
+        (json) => {
+        push('/')
+        },
+        (err_json) => {
+        error = err_json
+        }
+        )
+      }
+    }
+
+  function delete_answer(answer_id) {
+    if(window.confirm('정말로 삭제하시겠습니까?')) 
+    {
+      let url = "/api/answer/delete"
+      let params = {
+      answer_id: answer_id  
+    }    
+  fastapi('delete', url, params,
+          (json) => {
+          get_question()
+          },
+          (err_json) => {
+          error = err_json
+          }
+          )
+    }
+    }
 </script>
 <!-- <h1>{question.subject}</h1>
 <div>
@@ -59,6 +94,12 @@
         <div class="card-text" style="white-space: pre-line;">{question.
   content}</div>
     <div class="d-flex justify-content-end">
+      {#if question.modify_date}
+      <div class="badge bg-light text-dark p-2 text-start mx-3">
+        <div class="mb-2">modified at</div>
+        <div>{moment(question.modify_date).format("YYYY년 MM월 DD일 HH:MM a")}</div>
+      </div>
+      {/if}
       <div class="badge bg-light text-dark p-2 text-start">
         <div class="mb-2">{question.user? question.user.username:""}</div>
         <div>{moment(question.create_date).format("YYYY년 MM월 DD일 hh:mm a")}</div>
@@ -68,6 +109,7 @@
       {#if question.user && $username ===question.user.username}
       <a use:link href="/question-modify/{question.id}"
       class="btn btn-sm btn-outline-secondary">수정</a>
+      <button class="btn btn-sm btn-outline-secondary" on:click={() => delete_question(question.id)}>삭 제</button>
       {/if}
     </div>
     </div>
@@ -75,19 +117,31 @@
   <button class = 'btn btn-secondary' on:click="{() => {push('/')
   }}">목록</button>
 <!--답변 목록-->
-  <h5 class="border-bottom my-3 py-2">{question.answers.length}개 의 답 변 이 있 습
-  니 다.</h5>
+  <h5 class="border-bottom my-3 py-2">{question.answers.length}개의 답변이 있습니다.</h5>
   {#each question.answers as answer}
   <div class="card my-3">
     <div class="card-body">
       <div class="card-text" style="white-space: pre-line;">{answer.content}
   </div>
       <div class="d-flex justify-content-end">
+        {#if answer.modify_date}
+        <div class="badge bg-light text-dark p-2 text-start mx-3">
+          <div class="mb-2">modified at</div>
+          <div>{moment(answer.modify_date).format("YYYY년 MM월 DD일 HH:MM a")}</div>
+        </div>
+        {/if}
         <div class="badge bg-light text-dark p-2 text-start">
           <div class="mb-2">{ answer.user ? answer.user.username : ""}</div>
           <div>{moment(answer.create_date).format("YYYY년 MM월 DD일 hh:mm a")}</div>
 
         </div>
+      </div>
+      <div class="my-3">
+        {#if answer.user && $username === answer.user.username }
+          <a use:link href="/answer-modify/{answer.id}"
+          class="btn btn-sm btn-outline-secondary">수 정</a>
+        {/if}
+        <button class="btn btn-sm btn-outline-secondary" on:click={() => delete_answer(answer.id) }>삭 제</button>
       </div>
     </div>
   </div>
@@ -102,3 +156,4 @@
   post_answer}" />
     </form>
   </div>
+

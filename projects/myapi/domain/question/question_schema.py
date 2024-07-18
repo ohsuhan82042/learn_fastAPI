@@ -11,13 +11,14 @@ class Question(BaseModel):
   create_date: datetime.datetime
   answers: list[Answer]=[]
   user: Union[User, None]
+  modify_date: Union[datetime.datetime,None] = None
 
   
 class QuestionCreate(BaseModel):
   subject: str
   content: str
 
-
+  
   @field_validator('subject','content')
   def not_empty(cls, v):
     if not v or not v.strip():
@@ -29,3 +30,6 @@ class QuestionList(BaseModel):
 
 class QuestionUpdate(QuestionCreate):
   question_id:int
+
+class QuestionDelete(BaseModel):
+  question_id: int

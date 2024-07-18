@@ -1,20 +1,24 @@
 from pydantic import BaseModel, field_validator, EmailStr 
 from pydantic_core.core_schema import FieldValidationInfo
+from typing import Union
 class UserCreate(BaseModel):
   username: str
   password1: str
   password2: str
   email: EmailStr
+  real_username: Union[str,None]
 
 class Token(BaseModel):
   access_token: str
   token_type: str
   username: str
+  real_username: Union[str,None]
 
 class User(BaseModel):
   id: int
   username: str
   email: str
+  real_username: Union[str,None]
 
 
 @field_validator('username','password1','password2',"email")
